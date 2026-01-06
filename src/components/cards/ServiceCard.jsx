@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { faArrowRight, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
 // Skeleton Loader
@@ -17,13 +16,18 @@ const SkeletonCard = () => (
   </div>
 );
 
-const ServiceCard = ({ service, variant = "default", isLoading = false }) => {
-  const navigate = useNavigate();
-
+const ServiceCard = ({
+  service,
+  variant = "default",
+  isLoading = false,
+  isSelected = false,
+  selectable = true,
+  onSelect,
+}) => {
   if (isLoading) return <SkeletonCard />;
   if (!service || !service.id) return null;
 
-  const { id, icon, title, price, description } = service;
+  const { icon, title, price, description } = service;
 
   // Variant styles
   const variantStyles = {
@@ -37,77 +41,71 @@ const ServiceCard = ({ service, variant = "default", isLoading = false }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.06 }}
-      transition={{ type: "spring", stiffness: 120, damping: 10 }}
-      onClick={() => navigate(`/services/${id}`)}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl p-6 backdrop-blur-md transition-all duration-300 ${variantStyles[variant]}`}
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 120, damping: 12 }}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        selectable && onSelect?.();
+      }}
+      className={`
+        group relative cursor-pointer overflow-hidden rounded-2xl p-6
+        backdrop-blur-md transition-all duration-300
+        ${variantStyles[variant]}
+        ${isSelected ? "ring-4 ring-white/80 scale-[1.02]" : ""}
+      `}
     >
-      {/* Pulsing neon glow */}
-      <div
-        className="
-        absolute -inset-1
-        bg-gradient-to-r from-white/20 via-white/50 to-white/20
-        opacity-50 blur-3xl
-        animate-pulse-slow
-        rounded-2xl
-      "
-      />
+      {/* Selected badge */}
+      {isSelected && (
+        <div className="absolute top-3 right-3 z-20 bg-white text-orange-600 rounded-full p-2 shadow-lg">
+          <FontAwesomeIcon icon={faCheck} />
+        </div>
+      )}
 
-      {/* Shimmer hover overlay */}
-      <div
-        className="
-        absolute inset-0
-        bg-gradient-to-r from-white/0 via-white/20 to-white/0
-        opacity-0 group-hover:opacity-30
-        transition-opacity duration-500
-        animate-shimmer
-      "
-      />
+      {/* Glow */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-white/20 via-white/40 to-white/20 opacity-40 blur-3xl rounded-2xl" />
 
       <div className="relative z-10 flex flex-col h-full justify-between">
-        {/* Icon row */}
+        {/* Icon */}
         {icon && (
           <div className="flex mb-4">
-            <div
-              className="
-                flex h-12 w-12 items-center justify-center rounded-xl 
-                bg-white/20 text-white
-                shadow-lg shadow-orange-300/60
-                group-hover:shadow-xl group-hover:shadow-orange-400/80
-                transition-shadow duration-300
-              "
-            >
-              <FontAwesomeIcon
-                icon={icon}
-                size="lg"
-                className="drop-shadow-md"
-              />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 shadow-lg">
+              <FontAwesomeIcon icon={icon} size="lg" />
             </div>
           </div>
         )}
 
-        {/* Title + Price row */}
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-bold drop-shadow-lg">{title}</h3>
-          <p className="text-black font-semibold drop-shadow-md">{price}</p>
+        {/* Title + Price */}
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-bold">{title}</h3>
+          <p className="text-black font-semibold">{price}</p>
         </div>
-        <h4 className="text-white font-medium justify-center item-center mb-3 drop-shadow-md">{description}</h4>
 
-        {/* Button row */}
+        {/* Description */}
+        <p className="text-white/90 text-sm mb-4">
+          {description}
+        </p>
+
+        {/* Select button */}
         <motion.button
-          whileHover={{ x: 6, scale: 1.05 }}
+          whileHover={{ scale: 1.05 }}
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
-            navigate(`/services/${id}`);
+            selectable && onSelect?.();
           }}
-          className="
+          className={`
             w-full inline-flex justify-center items-center gap-2 font-medium
-            bg-white text-black px-4 py-2 rounded-xl
-            shadow-lg hover:shadow-2xl
-            transition-all duration-300 hover:bg-white/90
-          "
+            px-4 py-2 rounded-xl transition-all duration-300
+            ${
+              isSelected
+                ? "bg-green-500 text-white"
+                : "bg-white text-black hover:bg-white/90"
+            }
+          `}
         >
-          Book Now <FontAwesomeIcon icon={faArrowRight} />
+          {isSelected ? "Selected" : "Select Service"}
+          <FontAwesomeIcon icon={faArrowRight} />
         </motion.button>
       </div>
     </motion.div>
