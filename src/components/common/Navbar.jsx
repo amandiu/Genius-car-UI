@@ -20,7 +20,7 @@ import {
 /* Demo user */
 const demoUser = {
   isLoggedIn: true, // false = Guest
-  role: "user",     // "guest" | "user" | "mechanic" | "admin"
+  role: "mechanic", // "guest" | "user" | "mechanic" | "admin"
 };
 
 export default function Navbar() {
@@ -52,7 +52,6 @@ export default function Navbar() {
       className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/70 border-b border-white/20"
     >
       <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-4">
-
         {/* LOGO */}
         <NavLink to="/" className="flex items-center gap-2 group">
           <div className="h-9 w-9 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition">
@@ -67,37 +66,72 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-2">
           {!isLoggedIn && (
             <>
-              <NavLink to="/" className={linkClass}><Home size={16} /> Home</NavLink>
-              <NavLink to="/services" className={linkClass}><Wrench size={16} /> Services</NavLink>
-              <NavLink to="/mechanics" className={linkClass}><User size={16} /> Mechanics</NavLink>
+              <NavLink to="/" className={linkClass}>
+                <Home size={16} /> Home
+              </NavLink>
+              <NavLink to="/services" className={linkClass}>
+                <Wrench size={16} /> Services
+              </NavLink>
+              <NavLink to="/mechanics" className={linkClass}>
+                <User size={16} /> Mechanics
+              </NavLink>
             </>
           )}
 
           {isLoggedIn && role === "user" && (
             <>
-              <NavLink to="/" className={linkClass}><Home size={16} /> Home</NavLink>
-              <NavLink to="/services" className={linkClass}><Wrench size={16} /> Services</NavLink>
-              <NavLink to="/mechanics" className={linkClass}><User size={16} /> Mechanics</NavLink>
-              <NavLink to="/bookings" className={linkClass}><ClipboardList size={16} /> My Bookings</NavLink>
-              <NavLink to="/parts" className={linkClass}><Package size={16} /> Parts Shop</NavLink>
+              <NavLink to="/" className={linkClass}>
+                <Home size={16} /> Home
+              </NavLink>
+              <NavLink to="/services" className={linkClass}>
+                <Wrench size={16} /> Services
+              </NavLink>
+              <NavLink to="/mechanics" className={linkClass}>
+                <User size={16} /> Mechanics
+              </NavLink>
+              <NavLink to="/bookings" className={linkClass}>
+                <ClipboardList size={16} /> My Bookings
+              </NavLink>
+              <NavLink to="/parts" className={linkClass}>
+                <Package size={16} /> Parts Shop
+              </NavLink>
             </>
           )}
 
           {isLoggedIn && role === "mechanic" && (
             <>
-              <NavLink to="/jobs" className={linkClass}><Truck size={16} /> Assigned Jobs</NavLink>
-              <NavLink to="/tracking" className={linkClass}><MapPin size={16} /> Live Tracking</NavLink>
-              <NavLink to="/earnings" className={linkClass}><Package size={16} /> Earnings</NavLink>
-              <NavLink to="/reviews" className={linkClass}><Star size={16} /> Reviews</NavLink>
+              <NavLink to="/mechanics-dashboard" className={linkClass}>
+                Dashboard
+              </NavLink>
+              <NavLink to="/jobs" className={linkClass}>
+                Assigned Jobs
+              </NavLink>
+              <NavLink to="/tracking" className={linkClass}>
+                Live Tracking
+              </NavLink>
+              <NavLink to="/earnings" className={linkClass}>
+                Earnings
+              </NavLink>
+              <NavLink to="/reviews" className={linkClass}>
+                Reviews
+              </NavLink>
             </>
           )}
 
           {isLoggedIn && role === "admin" && (
             <>
-              <NavLink to="/dashboard" className={linkClass}><LayoutDashboard size={16} /> Dashboard</NavLink>
-              <NavLink to="/orders" className={linkClass}><ClipboardList size={16} /> Orders</NavLink>
-              <NavLink to="/inventory" className={linkClass}><Package size={16} /> Inventory</NavLink>
-              <NavLink to="/mechanics" className={linkClass}><User size={16} /> Mechanics</NavLink>
+              <NavLink to="/dashboard" className={linkClass}>
+                <LayoutDashboard size={16} /> Dashboard
+              </NavLink>
+              <NavLink to="/orders" className={linkClass}>
+                <ClipboardList size={16} /> Orders
+              </NavLink>
+              <NavLink to="/inventory" className={linkClass}>
+                <Package size={16} /> Inventory
+              </NavLink>
+              <NavLink to="/mechanics" className={linkClass}>
+                <User size={16} /> Mechanics
+              </NavLink>
             </>
           )}
         </div>
@@ -106,15 +140,24 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-2">
           {!isLoggedIn ? (
             <>
-              <motion.button whileTap={{ scale: 0.95 }} className="px-4 py-1.5 border rounded-lg">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-1.5 border rounded-lg"
+              >
                 <LogIn size={16} /> Login
               </motion.button>
-              <motion.button whileHover={{ scale: 1.05 }} className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow"
+              >
                 <UserPlus size={16} /> Get Started
               </motion.button>
             </>
           ) : (
-            <motion.button whileHover={{ scale: 1.05 }} className="px-4 py-1.5 rounded-lg border backdrop-blur-md">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              className="px-4 py-1.5 rounded-lg border backdrop-blur-md"
+            >
               <User size={16} /> {role}
             </motion.button>
           )}
@@ -155,40 +198,75 @@ export default function Navbar() {
               {/* Links */}
               {!isLoggedIn && (
                 <>
-                  <NavLink to="/" className={linkClass}><Home size={16}/> Home</NavLink>
-                  <NavLink to="/services" className={linkClass}><Wrench size={16}/> Services</NavLink>
-                  <NavLink to="/mechanics" className={linkClass}><User size={16}/> Mechanics</NavLink>
+                  <NavLink to="/" className={linkClass}>
+                    <Home size={16} /> Home
+                  </NavLink>
+                  <NavLink to="/services" className={linkClass}>
+                    <Wrench size={16} /> Services
+                  </NavLink>
+                  <NavLink to="/mechanics" className={linkClass}>
+                    <User size={16} /> Mechanics
+                  </NavLink>
                   <button className="w-full bg-orange-500 text-white py-2 rounded mt-2 flex items-center justify-center gap-2">
-                    <LogIn size={16}/> Login
+                    <LogIn size={16} /> Login
                   </button>
                 </>
               )}
 
               {isLoggedIn && role === "user" && (
                 <>
-                  <NavLink to="/" className={linkClass}><Home size={16}/> Home</NavLink>
-                  <NavLink to="/services" className={linkClass}><Wrench size={16}/> Services</NavLink>
-                  <NavLink to="/mechanics" className={linkClass}><User size={16}/> Mechanics</NavLink>
-                  <NavLink to="/bookings" className={linkClass}><ClipboardList size={16}/> My Bookings</NavLink>
-                  <NavLink to="/parts" className={linkClass}><Package size={16}/> Parts Shop</NavLink>
+                  <NavLink to="/" className={linkClass}>
+                    <Home size={16} /> Home
+                  </NavLink>
+                  <NavLink to="/services" className={linkClass}>
+                    <Wrench size={16} /> Services
+                  </NavLink>
+                  <NavLink to="/mechanics" className={linkClass}>
+                    <User size={16} /> Mechanics
+                  </NavLink>
+                  <NavLink to="/bookings" className={linkClass}>
+                    <ClipboardList size={16} /> My Bookings
+                  </NavLink>
+                  <NavLink to="/parts" className={linkClass}>
+                    <Package size={16} /> Parts Shop
+                  </NavLink>
                 </>
               )}
 
               {isLoggedIn && role === "mechanic" && (
                 <>
-                  <NavLink to="/jobs" className={linkClass}><Truck size={16}/> Assigned Jobs</NavLink>
-                  <NavLink to="/tracking" className={linkClass}><MapPin size={16}/> Live Tracking</NavLink>
-                  <NavLink to="/earnings" className={linkClass}><Package size={16}/> Earnings</NavLink>
-                  <NavLink to="/reviews" className={linkClass}><Star size={16}/> Reviews</NavLink>
+                  <NavLink to="/mechanics-dashboard" className={linkClass}>
+                    Dashboard
+                  </NavLink>
+                  <NavLink to="/jobs" className={linkClass}>
+                    Assigned Jobs
+                  </NavLink>
+                  <NavLink to="/tracking" className={linkClass}>
+                    Live Tracking
+                  </NavLink>
+                  <NavLink to="/earnings" className={linkClass}>
+                    Earnings
+                  </NavLink>
+                  <NavLink to="/reviews" className={linkClass}>
+                    Reviews
+                  </NavLink>
                 </>
               )}
 
               {isLoggedIn && role === "admin" && (
                 <>
-                  <NavLink to="/dashboard" className={linkClass}><LayoutDashboard size={16}/> Dashboard</NavLink>
-                  <NavLink to="/orders" className={linkClass}><ClipboardList size={16}/> Orders</NavLink>
-                  <NavLink to="/inventory" className={linkClass}><Package size={16}/> Inventory</NavLink>
-                  <NavLink to="/mechanics" className={linkClass}><User size={16}/> Mechanics</NavLink>
+                  <NavLink to="/dashboard" className={linkClass}>
+                    <LayoutDashboard size={16} /> Dashboard
+                  </NavLink>
+                  <NavLink to="/orders" className={linkClass}>
+                    <ClipboardList size={16} /> Orders
+                  </NavLink>
+                  <NavLink to="/inventory" className={linkClass}>
+                    <Package size={16} /> Inventory
+                  </NavLink>
+                  <NavLink to="/mechanics" className={linkClass}>
+                    <User size={16} /> Mechanics
+                  </NavLink>
                 </>
               )}
             </motion.div>
@@ -198,10 +276,6 @@ export default function Navbar() {
     </motion.nav>
   );
 }
-
-
-
-
 
 // import { useState } from "react";
 // import { NavLink } from "react-router-dom";
