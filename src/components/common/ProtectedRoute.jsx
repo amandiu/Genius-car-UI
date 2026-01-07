@@ -1,12 +1,14 @@
+// src/components/common/ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-// user = { isLoggedIn: true, role: "user" | "mechanic" | "admin" }
-// allowedRoles = array of roles
-const ProtectedRoute = ({ children, user, allowedRoles }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user } = useAuth();
+
   if (!user?.isLoggedIn) return <Navigate to="/" replace />;
   if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/" replace />;
+
   return children;
 };
 
-
-export default ProtectedRoute; // ✅ Must have default export
+export default ProtectedRoute;
