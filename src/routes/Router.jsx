@@ -10,6 +10,7 @@ import ErrorPage from "../pages/ErrorPage";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import SingleMechanicDashboard from "../components/dashboard/SingleMechanicDashboard";
 import AssignedJobs from "../pages/mechanics/AssignedJobs";
+import LiveTracking from "../pages/tracking/LiveTracking";
 
 export const router = createBrowserRouter([
   {
@@ -31,11 +32,18 @@ export const router = createBrowserRouter([
         ),
       },
 
-       {
+      {
         path: "jobs",
         element: (
           <ProtectedRoute allowedRoles={["mechanic"]}>
             <AssignedJobs />
+          </ProtectedRoute>
+        ),
+      }, {
+        path: "tracking",
+        element: (
+          <ProtectedRoute allowedRoles={["mechanic"]}>
+            <LiveTracking />
           </ProtectedRoute>
         ),
       },

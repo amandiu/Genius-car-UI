@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { cn } from './../../data/utils'
+import { cn } from '../../utils/utils'
 
 function Card({ className, ...props }) {
   return (
