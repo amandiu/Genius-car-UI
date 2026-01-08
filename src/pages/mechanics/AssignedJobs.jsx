@@ -1,107 +1,149 @@
-// src/components/dashboard/AssignedJobs.jsx
-import React, { useEffect, useState } from "react";
-import {
-  FaTools,
-  FaMapMarkerAlt,
-  FaClock,
-  FaCheckCircle,
-} from "react-icons/fa";
+// src/pages/mechanics/AssignedJobs.jsx
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import Jobs from "../../components/jobs/Jobs";
 
 const AssignedJobs = () => {
+  const { user } = useAuth();
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Dummy backend jobs (API-ready)
+  const dummyJobs = [
+    {
+      id: "job1",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    }, {
+      id: "job2",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    }, {
+      id: "job3",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    }, {
+      id: "job4",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    }, {
+      id: "job5",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    }, {
+      id: "job6",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    }, {
+      id: "job7",
+      service: "Engine Repair",
+      customer: "Rahim",
+      location: "Dhanmondi",
+      price: 2500,
+      status: "in-progress",
+      mechanicId: "mech001",
+    },
+  ];
 
   useEffect(() => {
-    // Simulated API
-    setJobs([
-      {
-        id: 1,
-        customer: "Rahim Uddin",
-        problem: "Car engine overheating",
-        location: "Gulshan, Dhaka",
-        status: "active",
-        assignedAt: "2 hours ago",
-      },
-      {
-        id: 2,
-        customer: "Karim Mia",
-        problem: "Bike chain issue",
-        location: "Dhanmondi, Dhaka",
-        status: "pending",
-        assignedAt: "Yesterday",
-      },
-    ]);
-  }, []);
+    if (!user?.id) return;
 
+    setTimeout(() => {
+      const myJobs = dummyJobs.filter(job => job.mechanicId === user.id);
+      setJobs(myJobs);
+      setLoading(false);
+    }, 500);
+  }, [user]);
+
+  const updateStatus = (id, status, reason = "") => {
+    setJobs(prev =>
+      prev.map(job =>
+        job.id === id
+          ? { ...job, status, failureReason: reason }
+          : job
+      )
+    );
+  };
+
+  /* =======================
+     ⏳ Loading Skeleton
+  ======================== */
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-full max-w-md bg-white p-6 rounded-xl shadow animate-pulse">
+          <div className="h-6 bg-gray-200 rounded mb-4" />
+          <div className="h-4 bg-gray-200 rounded mb-2" />
+          <div className="h-4 bg-gray-200 rounded w-2/3" />
+        </div>
+      </div>
+    );
+  }
+
+  /* =======================
+     📭 Empty State
+  ======================== */
+  if (jobs.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-10 rounded-2xl shadow text-center max-w-md">
+          <h2 className="text-2xl font-bold text-gray-700">
+            No Assigned Jobs
+          </h2>
+          <p className="text-gray-500 mt-3">
+            You don’t have any active jobs right now.  
+            New jobs will appear here once assigned.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  /* =======================
+     📋 Main Content
+  ======================== */
   return (
-    <div className="min-h-screen bg-orange-50 p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
-
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
+        
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-6 shadow">
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <FaTools /> Assigned Jobs
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800">
+            Assigned Jobs
           </h1>
-          <p className="text-sm opacity-90">
-            Jobs assigned to you by admin
+          <p className="text-gray-600 mt-2">
+            Track, manage and update your assigned service jobs efficiently.
           </p>
         </div>
 
-        {/* Jobs List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {jobs.map((job) => (
-            <div
-              key={job.id}
-              className="bg-white rounded-2xl shadow-md p-5 hover:shadow-xl transition"
-            >
-              {/* Job Header */}
-              <div className="flex justify-between items-center mb-3">
-                <h2 className="font-semibold text-slate-800">
-                  {job.customer}
-                </h2>
-                <span
-                  className={`text-xs font-medium px-3 py-1 rounded-full
-                  ${
-                    job.status === "active"
-                      ? "bg-emerald-100 text-emerald-600"
-                      : "bg-amber-100 text-amber-600"
-                  }`}
-                >
-                  {job.status}
-                </span>
-              </div>
-
-              {/* Details */}
-              <p className="text-slate-600 mb-2">{job.problem}</p>
-
-              <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
-                <FaMapMarkerAlt className="text-orange-500" />
-                {job.location}
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <FaClock className="text-orange-500" />
-                Assigned {job.assignedAt}
-              </div>
-
-              {/* Actions */}
-              <div className="mt-4 flex gap-3">
-                <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg text-sm font-medium">
-                  Start Job
-                </button>
-                <button className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-1">
-                  <FaCheckCircle /> Complete
-                </button>
-              </div>
-            </div>
-          ))}
+        {/* Jobs Section */}
+        <div className="bg-white rounded-2xl shadow p-4 md:p-6">
+          <Jobs jobs={jobs} updateStatus={updateStatus} />
         </div>
-
-        {/* Empty State */}
-        {jobs.length === 0 && (
-          <div className="text-center text-slate-500 mt-12">
-            No jobs assigned yet.
-          </div>
-        )}
       </div>
     </div>
   );

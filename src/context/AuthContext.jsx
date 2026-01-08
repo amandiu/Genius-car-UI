@@ -1,21 +1,18 @@
-// src/context/AuthContext.jsx
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  // Initial state without demoUser
   const [user, setUser] = useState({
-    isLoggedIn: true,    // false = guest
-    role: "mechanic",    // "guest" | "user" | "mechanic" | "admin"
-    name: "John Doe",    // optional
-    email: "john@example.com", // optional
+    id: "mech001",
+    role: "mechanic",
+    isLoggedIn: true,
   });
 
-  const changeRole = (newRole) => {
-    setUser((prev) => ({ ...prev, role: newRole }));
+  const changeRole = (role) => {
+    setUser((prev) => ({ ...prev, role }));
   };
 
   return (
