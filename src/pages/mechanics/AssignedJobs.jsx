@@ -116,13 +116,14 @@ const AssignedJobs = () => {
 
   return (
     <section className="p-6 md:p-10 min-h-screen bg-gray-50">
-      <div className="justify-center flex flex-col items-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8">
-          Assigned <span className="text-orange-500">Jobs</span>
+      <div className="justify-center  bg-gradient-to-r from-orange-500 to-amber-500 flex flex-col items-center">
+        <h1 className="text-4xl mt-5 font-bold text-white mb-8">
+          Assigned Jobs
         </h1>
-        <p className="text-gray-700 text-lg mb-6">
+        <p className="text-gray-700 mt-[-25px] px-9 text-lg mb-6">
           You are currently assigned {jobs.length} jobs. Manage and update their status here.
-        </p>  </div>
+        </p> 
+         </div>
       {/* DESKTOP TABLE */}
       <div className="hidden md:block bg-white rounded-xl shadow p-6">
         <table className="w-full">

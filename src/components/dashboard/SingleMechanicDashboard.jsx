@@ -10,6 +10,8 @@ import {
   FaStar,
   FaCheckCircle,
 } from "react-icons/fa";
+import MechanicProfile from "../mechanics/MechanicProfile";
+import EditProfileModal from "../mechanics/EditProfileModal";
 
 /* ---------- REUSABLE STAT CARD ---------- */
 const StatCard = ({ icon, title, value, color }) => (
@@ -20,9 +22,17 @@ const StatCard = ({ icon, title, value, color }) => (
   </div>
 );
 
+
+
+
+
+
+
+
 const SingleMechanicDashboard = () => {
   const { id } = useParams();
   const [mechanic, setMechanic] = useState(null);
+  const [editing, setEditing] = useState(false); // ✅ FIX
 
   useEffect(() => {
     // 🔹 Simulated API Response
@@ -71,36 +81,23 @@ const SingleMechanicDashboard = () => {
             Profile, earnings & performance overview
           </p>
         </div>
+        <div className="space-y-6">
 
-        {/* PROFILE */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="flex flex-col items-center text-center">
-            <div className="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-4xl font-bold">
-              {mechanic.name.charAt(0)}
-            </div>
-            <h2 className="mt-3 font-semibold text-lg text-slate-800">
-              {mechanic.name}
-            </h2>
-            <span className="flex items-center gap-1 text-emerald-600 text-sm mt-1">
-              <FaCheckCircle /> {mechanic.status}
-            </span>
-          </div>
+          {/* PROFILE SECTION */}
+          <MechanicProfile
+            mechanic={mechanic}
+            onEdit={() => setEditing(true)}
+          />
 
-          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <p className="flex items-center gap-2 text-slate-600">
-              <FaEnvelope className="text-orange-500" /> {mechanic.email}
-            </p>
-            <p className="flex items-center gap-2 text-slate-600">
-              <FaPhone className="text-orange-500" /> {mechanic.phone}
-            </p>
-            <p className="flex items-center gap-2 text-slate-600">
-              <FaMapMarkerAlt className="text-orange-500" /> {mechanic.location}
-            </p>
-            <p className="flex items-center gap-2 text-slate-600">
-              <FaUser className="text-orange-500" /> Experience:{" "}
-              {mechanic.experience}
-            </p>
-          </div>
+          {editing && (
+            <EditProfileModal
+              mechanic={mechanic}
+              onClose={() => setEditing(false)}
+              onSave={(updated) => setMechanic(updated)}
+            />
+          )}
+
+          {/* OTHER DASHBOARD SECTIONS */}
         </div>
 
         {/* CORE STATS */}

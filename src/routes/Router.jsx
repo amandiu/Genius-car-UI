@@ -11,6 +11,8 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 import SingleMechanicDashboard from "../components/dashboard/SingleMechanicDashboard";
 import AssignedJobs from "../pages/mechanics/AssignedJobs";
 import LiveTracking from "../pages/tracking/LiveTracking";
+import MechanicEarnings from "../pages/mechanics/MechanicEarnings";
+import MechanicReviews from "../pages/mechanics/MechanicReviews";
 
 export const router = createBrowserRouter([
   {
@@ -39,11 +41,28 @@ export const router = createBrowserRouter([
             <AssignedJobs />
           </ProtectedRoute>
         ),
-      }, {
+      },
+      {
         path: "tracking",
         element: (
           <ProtectedRoute allowedRoles={["mechanic"]}>
             <LiveTracking />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "earnings",
+        element: (
+          <ProtectedRoute allowedRoles={["mechanic"]}>
+            <MechanicEarnings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "reviews",
+        element: (
+          <ProtectedRoute allowedRoles={["mechanic"]}>
+            <MechanicReviews />
           </ProtectedRoute>
         ),
       },

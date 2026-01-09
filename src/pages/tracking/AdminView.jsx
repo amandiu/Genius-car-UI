@@ -1,4 +1,4 @@
-import LiveMap from "../maps/LiveMap";
+import LiveMap from "../../components/map/LiveMap";
 
 const AdminView = () => {
   const allMechanics = [

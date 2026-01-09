@@ -13,6 +13,10 @@ const ServicesGrid = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [priceSort, setPriceSort] = useState("None");
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const servicesPerPage = 6; // Number of services per page
+
   // Filter & sort services
   const filteredServices = useMemo(() => {
     let result = services.filter((s) => {
@@ -40,6 +44,14 @@ const ServicesGrid = () => {
 
     return result;
   }, [services, selectedCategory, searchText, priceSort]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
+  const paginatedServices = useMemo(() => {
+    const start = (currentPage - 1) * servicesPerPage;
+    const end = start + servicesPerPage;
+    return filteredServices.slice(start, end);
+  }, [filteredServices, currentPage]);
 
   const toggleService = (service) => {
     setSelectedServices((prev) =>
@@ -87,7 +99,7 @@ const ServicesGrid = () => {
         <div className="lg:col-span-2">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <AnimatePresence>
-              {filteredServices.map((service) => (
+              {paginatedServices.map((service) => (
                 <motion.div
                   key={service.id}
                   layout
@@ -106,12 +118,47 @@ const ServicesGrid = () => {
               ))}
             </AnimatePresence>
 
-            {filteredServices.length === 0 && (
+            {paginatedServices.length === 0 && (
               <p className="text-center text-gray-500 mt-6">
                 No services found.
               </p>
             )}
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-3 mt-6">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                className="px-3 py-1 border rounded hover:bg-gray-200"
+                disabled={currentPage === 1}
+              >
+                Prev
+              </button>
+
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={`px-3 py-1 border rounded ${
+                    currentPage === index + 1 ? "bg-gray-300" : "hover:bg-gray-200"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                className="px-3 py-1 border rounded hover:bg-gray-200"
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="lg:col-span-1 bg-gray-50 p-4 rounded-xl shadow-inner sticky top-24">
