@@ -1,19 +1,63 @@
-const LiveMap = ({ title, location }) => {
-  return (
-    <div className="bg-white rounded-xl shadow p-4">
-      <h3 className="font-semibold text-lg mb-2">{title}</h3>
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { useState } from "react";
 
-      <div className="h-48 flex items-center justify-center bg-gray-100 rounded-lg">
-        <div className="text-center">
-          <p className="text-sm">Latitude: {location.lat.toFixed(5)}</p>
-          <p className="text-sm">Longitude: {location.lng.toFixed(5)}</p>
-          <p className="text-xs text-gray-500 mt-2">
-            (Live map placeholder)
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+const containerStyle = {
+    width: "100%",
+    height: "500px",
+    borderRadius: "16px",
+};
+
+const defaultCenter = {
+    lat: 23.8103,
+    lng: 90.4125 // example (Delhi)
+};
+
+const mapOptions = {
+    disableDefaultUI: true,
+    zoomControl: true,
+    styles: [
+        { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#f5f5f5" }] },
+        {
+            featureType: "road",
+            elementType: "geometry",
+            stylers: [{ color: "#ffffff" }],
+        },
+    ],
+};
+
+const LiveMap = ({ markers = [] }) => {
+    const [activeMarker, setActiveMarker] = useState(null);
+
+    return (
+        <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={defaultCenter}
+            zoom={13}
+            options={mapOptions}
+        >
+            {markers.map((m) => (
+                <Marker
+                    key={m.id}
+                    position={m.position}
+                    onClick={() => setActiveMarker(m)}
+                />
+            ))}
+
+            {activeMarker && (
+                <InfoWindow
+                    position={activeMarker.position}
+                    onCloseClick={() => setActiveMarker(null)}
+                >
+                    <div className="text-sm">
+                        <p className="font-semibold">{activeMarker.name}</p>
+                        <p className="text-gray-500">{activeMarker.status}</p>
+                    </div>
+                </InfoWindow>
+            )}
+        </GoogleMap>
+    );
 };
 
 export default LiveMap;

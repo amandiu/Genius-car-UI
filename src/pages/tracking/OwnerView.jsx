@@ -1,23 +1,20 @@
-import { useEffect, useState } from "react";
-import LiveMap from "../../components/map/LiveMap";
-import { getFakeLocation } from "../../utils/fakeLocation";
+import LiveMap from "../maps/LiveMap";
 
 const OwnerView = () => {
-  const [mechanicLocation, setMechanicLocation] = useState(getFakeLocation());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMechanicLocation(getFakeLocation());
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const mechanic = [
+    {
+      id: 1,
+      name: "Mechanic - Rahul",
+      status: "Arriving in 8 mins",
+      position: { lat: 28.6122, lng: 77.2084 },
+    },
+  ];
 
   return (
-    <LiveMap
-      title="Mechanic Live Location"
-      location={mechanicLocation}
-    />
+    <div className="bg-white rounded-2xl shadow-lg p-6">
+      <h2 className="text-xl font-semibold mb-4">Track Mechanic</h2>
+      <LiveMap markers={mechanic} />
+    </div>
   );
 };
 

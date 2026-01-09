@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@heroicons/react": "^1.0.6",
     "@radix-ui/react-slot": "^1.2.4",
+    "@react-google-maps/api": "^2.20.8",
     "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.24.10",
